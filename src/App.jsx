@@ -1,51 +1,73 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import Profile from "./pages/Profile";
-import TourDetails from "./pages/TourDetails";
+import React, { lazy, Suspense, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { AuthProvider, useAuth } from "./AuthContext";
-import DestinationHighlights from "./components/DestinationHighlights";
-import DestinationDetails from "./pages/DestinationDetails"; // ← add this route too
+import Navbar from "./components/Navbar";
 
+// Lazy-loaded route-based components
+const Hero = lazy(() => import("./components/Hero"));
+const DestinationHighlights = lazy(() => import("./components/DestinationHighlights"));
+const Login = lazy(() => import("./pages/Login"));
+const Signup = lazy(() => import("./pages/Signup"));
+const Profile = lazy(() => import("./pages/Profile"));
+const TourDetails = lazy(() => import("./pages/TourDetails"));
+const DestinationDetails = lazy(() => import("./pages/DestinationDetails"));
+
+// Protected route wrapper
 const ProtectedRoute = ({ children }) => {
   const { user } = useAuth();
   return user ? children : <Navigate to="/login" />;
+};
+
+// Scroll to top on route change
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [pathname]);
+  return null;
 };
 
 export default function App() {
   return (
     <AuthProvider>
       <Router>
+        <ScrollToTop />
         <Navbar />
-        <Routes>
-          {/* Main homepage with Hero and Destination Highlights */}
-          <Route path="/" element={
-            <>
-              <Hero />
-              <DestinationHighlights />
-            </>
-          } />
+        <Suspense fallback={<div className="text-center py-10 text-xl">Loading...</div>}>
+          <Routes>
+            {/* Homepage Route */}
+            <Route
+              path="/"
+              element={
+                <>
+                  <Hero />
+                  <DestinationHighlights />
+                </>
+              }
+            />
 
-          {/* Destination detailed page */}
-          <Route path="/destination/:id" element={<DestinationDetails />} />
+            {/* Auth Routes */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
 
-          {/* Public Routes */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
+            {/* Protected Route */}
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
 
-          {/* Protected Profile Page */}
-          <Route path="/profile" element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          } />
+            {/* Dynamic Content Routes */}
+            <Route path="/tour/:id" element={<TourDetails />} />
+            <Route path="/destination/:id" element={<DestinationDetails />} />
 
-          {/* Tour Detail Dynamic Page */}
-          <Route path="/tour/:id" element={<TourDetails />} />
-        </Routes>
+            {/* Fallback Route (Optional) */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </Suspense>
       </Router>
     </AuthProvider>
   );

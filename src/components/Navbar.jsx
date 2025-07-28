@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FiPhone } from "react-icons/fi";
 import { useAuth } from "../AuthContext";
 
-export default function Navbar() {
+function Navbar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
@@ -13,10 +13,18 @@ export default function Navbar() {
     navigate("/login");
   };
 
+  // Only update scroll state when it actually changes (perf improvement)
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 80);
+      const scrollTop = window.scrollY;
+      setIsScrolled((prev) => {
+        if ((scrollTop > 80 && !prev) || (scrollTop <= 80 && prev)) {
+          return scrollTop > 80;
+        }
+        return prev;
+      });
     };
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -24,13 +32,13 @@ export default function Navbar() {
   const textColor = isScrolled ? "text-black" : "text-white";
   const hoverColor = isScrolled ? "hover:text-red-500" : "hover:text-red-400";
 
-  // Smooth scroll function
-  const scrollToSection = (id) => {
+  // useCallback to avoid creating a new scrollTo function on every render
+  const scrollToSection = useCallback((id) => {
     const target = document.querySelector(id);
     if (target) {
       target.scrollIntoView({ behavior: "smooth" });
     }
-  };
+  }, []);
 
   return (
     <nav
@@ -49,11 +57,7 @@ export default function Navbar() {
 
       {/* Navigation Links */}
       <div className={`hidden md:flex gap-6 font-medium ${textColor}`}>
-        <Link to="/" className={`${hoverColor} transition`}>
-          Home
-        </Link>
-
-        {/* Smooth Scroll to #featured */}
+        <Link to="/" className={`${hoverColor} transition`}>Home</Link>
         <a
           href="#featured"
           onClick={(e) => {
@@ -64,12 +68,7 @@ export default function Navbar() {
         >
           Trips
         </a>
-
-        <Link to="/about" className={`${hoverColor} transition`}>
-          About
-        </Link>
-
-        {/* Smooth Scroll to #highlights */}
+        <Link to="/about" className={`${hoverColor} transition`}>About</Link>
         <a
           href="#highlights"
           onClick={(e) => {
@@ -80,7 +79,6 @@ export default function Navbar() {
         >
           Destinations
         </a>
-
         {user && (
           <Link to="/profile" className="hover:text-green-500 transition">
             Profile
@@ -135,3 +133,6 @@ export default function Navbar() {
     </nav>
   );
 }
+
+// ✅ Memoize the component to avoid re-renders unless props/state change
+export default React.memo(Navbar);

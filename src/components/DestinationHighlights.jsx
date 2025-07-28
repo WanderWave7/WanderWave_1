@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import parisImg from "../assets/paris1.jpg";
+import parisImg from "../assets/parisHero.jpg";
 import tokyoImg from "../assets/tokyo1.jpg";
 import nycImg from "../assets/nyc1.jpg";
 import veniceImg from "../assets/venice1.jpg";

@@ -5,18 +5,18 @@ import gallery3 from "../assets/paris3.jpeg";
 
 import tokyoHero from "../assets/tokyoHero.jpg";
 import tokyo1 from "../assets/tokyo1.jpg";
-import tokyo2 from "../assets/tokyo2.jpg"; // Replace with real Tokyo image
-import tokyo3 from "../assets/tokyo3.jpg";     // Replace with real Tokyo image
+import tokyo2 from "../assets/tokyo2.jpg"; 
+import tokyo3 from "../assets/tokyo3.jpg";     
 
 import nycHero from "../assets/nyc1.jpg";
 import nyc1 from "../assets/nyc1.jpg";
-import nyc2 from "../assets/nyc2.jpg"; // Replace with real NYC image
-import nyc3 from "../assets/nyc3.jpg";   // Replace with real NYC image
+import nyc2 from "../assets/nyc2.jpg"; 
+import nyc3 from "../assets/nyc3.jpg";   
 
 import veniceHero from "../assets/venice1.jpg";
 import venice1 from "../assets/venice1.jpg";
-import venice2 from "../assets/venice2.jpg"; // Replace with real Venice image
-import venice3 from "../assets/venice3.jpg"; // Replace with real Venice image
+import venice2 from "../assets/venice2.jpg"; 
+import venice3 from "../assets/venice3.jpg"; 
 
 const destinationData = [
   {
