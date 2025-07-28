@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FiPhone } from "react-icons/fi";
 import { useAuth } from "../AuthContext";
@@ -6,37 +6,83 @@ import { useAuth } from "../AuthContext";
 export default function Navbar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const handleLogout = () => {
     logout();
     navigate("/login");
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 80);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const textColor = isScrolled ? "text-black" : "text-white";
+  const hoverColor = isScrolled ? "hover:text-red-500" : "hover:text-red-400";
+
+  // Smooth scroll function
+  const scrollToSection = (id) => {
+    const target = document.querySelector(id);
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
-    <nav className="w-[calc(100%-2rem)] mx-auto py-4 px-6 md:px-16 bg-white/30 backdrop-blur-md rounded-xl mt-4 flex justify-between items-center shadow-md fixed top-0 left-0 right-0 z-50">
+    <nav
+      className={`w-[calc(100%-2rem)] mx-auto py-4 px-6 md:px-16 rounded-xl mt-4 flex justify-between items-center shadow-md fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled
+          ? "bg-white text-black"
+          : "bg-white/30 backdrop-blur-md text-white"
+      }`}
+    >
       {/* Logo */}
-      <div className="text-2xl font-bold text-white tracking-wide">
-        <Link to="/" className="hover:text-red-400 transition">
+      <div className={`text-2xl font-bold tracking-wide ${textColor}`}>
+        <Link to="/" className={`${hoverColor} transition`}>
           WanderWave<span className="text-red-400">.</span>
         </Link>
       </div>
 
-      {/* Navigation Links with Profile */}
-      <div className="hidden md:flex gap-6 font-medium text-white">
-        <Link to="/" className="hover:text-red-400 transition">
+      {/* Navigation Links */}
+      <div className={`hidden md:flex gap-6 font-medium ${textColor}`}>
+        <Link to="/" className={`${hoverColor} transition`}>
           Home
         </Link>
-        <Link to="/trips" className="hover:text-red-400 transition">
+
+        {/* Smooth Scroll to #featured */}
+        <a
+          href="#featured"
+          onClick={(e) => {
+            e.preventDefault();
+            scrollToSection("#featured");
+          }}
+          className={`${hoverColor} transition`}
+        >
           Trips
-        </Link>
-        <Link to="/about" className="hover:text-red-400 transition">
+        </a>
+
+        <Link to="/about" className={`${hoverColor} transition`}>
           About
         </Link>
-        <Link to="/destinations" className="hover:text-red-400 transition">
+
+        {/* Smooth Scroll to #highlights */}
+        <a
+          href="#highlights"
+          onClick={(e) => {
+            e.preventDefault();
+            scrollToSection("#highlights");
+          }}
+          className={`${hoverColor} transition`}
+        >
           Destinations
-        </Link>
+        </a>
+
         {user && (
-          <Link to="/profile" className="hover:text-green-300 transition">
+          <Link to="/profile" className="hover:text-green-500 transition">
             Profile
           </Link>
         )}
@@ -49,7 +95,7 @@ export default function Navbar() {
             <>
               <Link
                 to="/login"
-                className="text-white px-4 py-1.5 rounded-md hover:text-red-400 text-sm font-semibold"
+                className={`${textColor} px-4 py-1.5 rounded-md ${hoverColor} text-sm font-semibold`}
               >
                 Login
               </Link>
@@ -62,12 +108,12 @@ export default function Navbar() {
             </>
           ) : (
             <>
-              <span className="text-white text-sm font-semibold">
+              <span className={`${textColor} text-sm font-semibold`}>
                 Hi, {user.username || "User"}
               </span>
               <button
                 onClick={handleLogout}
-                className="text-white hover:text-yellow-300 text-sm font-semibold"
+                className={`${textColor} hover:text-yellow-500 text-sm font-semibold`}
               >
                 Logout
               </button>
@@ -75,11 +121,12 @@ export default function Navbar() {
           )}
         </div>
 
-        <div className="hidden md:flex items-center gap-2 text-sm text-white">
+        {/* Contact Section */}
+        <div className={`hidden md:flex items-center gap-2 text-sm ${textColor}`}>
           <FiPhone className="text-red-400 text-lg" />
           <div>
             <p className="font-bold leading-none">+1 1800 25 2202</p>
-            <p className="text-xs text-white/90 leading-none">
+            <p className={`text-xs ${isScrolled ? "text-black/80" : "text-white/90"} leading-none`}>
               Call Your Travel Agent
             </p>
           </div>
