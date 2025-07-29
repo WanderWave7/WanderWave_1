@@ -2,27 +2,53 @@ import React from "react";
 import contactHero from "../assets/contactHero.jpg";
 import officeImage from "../assets/officeImage.jpg";
 import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaClock } from "react-icons/fa";
+import { motion } from "framer-motion";
+
+const fadeInUp = {
+  hidden: { opacity: 0, y: 40 },
+  visible: (delay = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, delay }
+  })
+};
 
 const Contact = () => {
+  // Scroll to top on mount (safety in case global ScrollToTop fails)
+  React.useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
   return (
     <div>
       {/* Hero Image */}
-      <div className="w-full h-[400px] md:h-[500px]">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+        className="w-full h-[400px] md:h-[500px]"
+      >
         <img
           src={contactHero}
           alt="Contact Hero"
           className="w-full h-full object-cover brightness-75"
         />
-      </div>
+      </motion.div>
 
       {/* Main Section */}
-      <div className="max-w-7xl mx-auto px-4 py-12 grid md:grid-cols-2 gap-8">
+      <motion.div
+        className="max-w-7xl mx-auto px-4 py-12 grid md:grid-cols-2 gap-8"
+        variants={fadeInUp}
+        initial="hidden"
+        animate="visible"
+        custom={0.2}
+      >
         {/* Left Side: Office Info */}
-        <div className="space-y-6">
+        <motion.div variants={fadeInUp} custom={0.3} className="space-y-6">
           <img
-           src={officeImage}
- 					 alt="Office"
-  				 className="rounded-2xl shadow-md w-full min-h-[300px] object-cover"
+            src={officeImage}
+            alt="Office"
+            className="rounded-2xl shadow-md w-full min-h-[300px] object-cover"
           />
           <div className="space-y-2 text-gray-700">
             <div className="flex items-center gap-2">
@@ -42,10 +68,14 @@ const Contact = () => {
               <span>Sunday–Friday: 9:30 AM – 5 PM</span>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Right Side: Contact Form */}
-        <form className="bg-white shadow-md rounded-xl p-8 space-y-6">
+        <motion.form
+          variants={fadeInUp}
+          custom={0.4}
+          className="bg-white shadow-md rounded-xl p-8 space-y-6"
+        >
           <h2 className="text-2xl font-semibold">Send Us a Message</h2>
 
           <div className="grid md:grid-cols-2 gap-4">
@@ -109,8 +139,8 @@ const Contact = () => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
             </svg>
           </button>
-        </form>
-      </div>
+        </motion.form>
+      </motion.div>
     </div>
   );
 };
