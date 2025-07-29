@@ -1,19 +1,19 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FiPhone } from "react-icons/fi";
+import { FiPhone, FiMenu, FiX } from "react-icons/fi";
 import { useAuth } from "../AuthContext";
 
 function Navbar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
     navigate("/login");
   };
 
-  // Only update scroll state when it actually changes (perf improvement)
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;
@@ -32,11 +32,11 @@ function Navbar() {
   const textColor = isScrolled ? "text-black" : "text-white";
   const hoverColor = isScrolled ? "hover:text-red-500" : "hover:text-red-400";
 
-  // useCallback to avoid creating a new scrollTo function on every render
   const scrollToSection = useCallback((id) => {
     const target = document.querySelector(id);
     if (target) {
       target.scrollIntoView({ behavior: "smooth" });
+      setMenuOpen(false); // Close mobile menu after clicking
     }
   }, []);
 
@@ -55,9 +55,31 @@ function Navbar() {
         </Link>
       </div>
 
+      {/* Hamburger (Mobile Only) */}
+      <div
+        className="md:hidden text-2xl"
+        onClick={() => setMenuOpen(!menuOpen)}
+      >
+        {menuOpen ? (
+          <FiX className={`${textColor}`} />
+        ) : (
+          <FiMenu className={`${textColor}`} />
+        )}
+      </div>
+
       {/* Navigation Links */}
-      <div className={`hidden md:flex gap-6 font-medium ${textColor}`}>
-        <Link to="/" className={`${hoverColor} transition`}>Home</Link>
+      <div
+        className={`${
+          menuOpen ? "flex" : "hidden"
+        } md:flex flex-col md:flex-row absolute md:static top-16 left-4 right-4 md:left-auto md:right-auto bg-white md:bg-transparent text-black md:text-inherit rounded-lg md:rounded-none p-4 md:p-0 shadow-md md:shadow-none z-40 gap-4 md:gap-6 font-medium transition-all`}
+      >
+        <Link
+          to="/"
+          className={`${hoverColor} transition`}
+          onClick={() => setMenuOpen(false)}
+        >
+          Home
+        </Link>
         <a
           href="#featured"
           onClick={(e) => {
@@ -68,7 +90,6 @@ function Navbar() {
         >
           Trips
         </a>
-        
         <a
           href="#highlights"
           onClick={(e) => {
@@ -79,18 +100,65 @@ function Navbar() {
         >
           Destinations
         </a>
-        <Link to="/about" className={`${hoverColor} transition`}>About Us</Link>
+        <Link
+          to="/about"
+          className={`${hoverColor} transition`}
+          onClick={() => setMenuOpen(false)}
+        >
+          About Us
+        </Link>
 
         {user && (
-          <Link to="/profile" className="hover:text-green-500 transition">
+          <Link
+            to="/profile"
+            className="hover:text-green-500 transition"
+            onClick={() => setMenuOpen(false)}
+          >
             Profile
           </Link>
         )}
+
+        {/* Auth Buttons for mobile */}
+        <div className="flex flex-col md:hidden gap-2">
+          {!user ? (
+            <>
+              <Link
+                to="/login"
+                className="text-sm text-blue-700 font-semibold"
+                onClick={() => setMenuOpen(false)}
+              >
+                Login
+              </Link>
+              <Link
+                to="/signup"
+                className="text-sm bg-blue-600 text-white px-4 py-2 rounded-md text-center hover:bg-blue-800 font-semibold"
+                onClick={() => setMenuOpen(false)}
+              >
+                Sign Up
+              </Link>
+            </>
+          ) : (
+            <>
+              <span className={`text-sm font-semibold`}>
+                Hi, {user.username || "User"}
+              </span>
+              <button
+                onClick={() => {
+                  handleLogout();
+                  setMenuOpen(false);
+                }}
+                className="text-sm text-red-500 font-semibold"
+              >
+                Logout
+              </button>
+            </>
+          )}
+        </div>
       </div>
 
-      {/* Right Section */}
-      <div className="flex items-center gap-6">
-        <div className="hidden md:flex gap-3 items-center">
+      {/* Desktop Only Auth & Contact */}
+      <div className="hidden md:flex items-center gap-6">
+        <div className="flex gap-3 items-center">
           {!user ? (
             <>
               <Link
@@ -121,12 +189,17 @@ function Navbar() {
           )}
         </div>
 
-        {/* Contact Section */}
-        <div className={`hidden md:flex items-center gap-2 text-sm ${textColor}`}>
+        <div
+          className={`hidden md:flex items-center gap-2 text-sm ${textColor}`}
+        >
           <FiPhone className="text-red-400 text-lg" />
           <div>
             <p className="font-bold leading-none">+1 1800 25 2202</p>
-            <p className={`text-xs ${isScrolled ? "text-black/80" : "text-white/90"} leading-none`}>
+            <p
+              className={`text-xs ${
+                isScrolled ? "text-black/80" : "text-white/90"
+              } leading-none`}
+            >
               Call Your Travel Agent
             </p>
           </div>
@@ -136,5 +209,4 @@ function Navbar() {
   );
 }
 
-// ✅ Memoize the component to avoid re-renders unless props/state change
 export default React.memo(Navbar);

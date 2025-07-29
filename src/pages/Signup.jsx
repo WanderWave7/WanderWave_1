@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import palmBg from "../assets/palm-bg.jpg";
+import palmBg from "../assets/palm-bg6.jpg";
 import { FiUser, FiMail, FiLock } from "react-icons/fi";
 import { FaFacebookF, FaGoogle } from "react-icons/fa";
 
@@ -14,7 +14,12 @@ export default function Signup() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!username.trim() || !email.trim() || !password.trim() || !confirmPassword.trim()) {
+    if (
+      !username.trim() ||
+      !email.trim() ||
+      !password.trim() ||
+      !confirmPassword.trim()
+    ) {
       alert("Please fill in all fields.");
       return;
     }

@@ -13,10 +13,14 @@ import PreFooter from "./components/PreFooter"; // ✅ Import PreFooter
 
 // Lazy-loaded components
 const Hero = lazy(() => import("./components/Hero"));
-const DestinationHighlights = lazy(() => import("./components/DestinationHighlights"));
+const DestinationHighlights = lazy(() =>
+  import("./components/DestinationHighlights")
+);
 const Services = lazy(() => import("./components/Services"));
 const WhyChooseUs = lazy(() => import("./components/WhyChooseUs"));
-const TestimonialSection = lazy(() => import("./components/TestimonialSection"));
+const TestimonialSection = lazy(() =>
+  import("./components/TestimonialSection")
+);
 const Login = lazy(() => import("./pages/Login"));
 const Signup = lazy(() => import("./pages/Signup"));
 const Profile = lazy(() => import("./pages/Profile"));
@@ -66,7 +70,9 @@ export default function App() {
       <Router>
         <ScrollToTop />
         <Navbar />
-        <Suspense fallback={<div className="text-center py-10 text-xl">Loading...</div>}>
+        <Suspense
+          fallback={<div className="text-center py-10 text-xl">Loading...</div>}
+        >
           <FooterWrapper>
             <Routes>
               {/* Homepage */}

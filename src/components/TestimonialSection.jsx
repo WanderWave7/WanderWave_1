@@ -5,17 +5,20 @@ import { motion } from "framer-motion";
 const testimonials = [
   {
     name: "Brandon Smith",
-    feedback: "WanderWave made our honeymoon unforgettable! Everything was well-organized and smooth.",
+    feedback:
+      "WanderWave made our honeymoon unforgettable! Everything was well-organized and smooth.",
     image: "https://randomuser.me/api/portraits/men/32.jpg",
   },
   {
     name: "Emily Johnson",
-    feedback: "Booking our dream destination was never this easy. Loved the experience!",
+    feedback:
+      "Booking our dream destination was never this easy. Loved the experience!",
     image: "https://randomuser.me/api/portraits/women/65.jpg",
   },
   {
     name: "Nitesh Sharma",
-    feedback: "Affordable and reliable. Their 24/7 support really helped us during our trip.",
+    feedback:
+      "Affordable and reliable. Their 24/7 support really helped us during our trip.",
     image: "https://randomuser.me/api/portraits/men/45.jpg",
   },
 ];
@@ -41,7 +44,8 @@ export default function TestimonialSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          What People Say About <span className="text-blue-600">WanderWave</span>
+          What People Say About{" "}
+          <span className="text-blue-600">WanderWave</span>
         </motion.h2>
 
         <Slider {...settings}>
@@ -59,8 +63,12 @@ export default function TestimonialSection() {
                   alt={testimonial.name}
                   className="w-28 h-28 rounded-full object-cover border-4 border-blue-500 mb-6"
                 />
-                <p className="text-gray-700 text-lg italic mb-4">"{testimonial.feedback}"</p>
-                <h4 className="text-xl font-semibold text-blue-700">{testimonial.name}</h4>
+                <p className="text-gray-700 text-lg italic mb-4">
+                  "{testimonial.feedback}"
+                </p>
+                <h4 className="text-xl font-semibold text-blue-700">
+                  {testimonial.name}
+                </h4>
               </div>
             </motion.div>
           ))}

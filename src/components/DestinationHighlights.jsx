@@ -10,25 +10,29 @@ const destinations = [
     id: 1,
     name: "Paris",
     image: parisImg,
-    description: "The city of lights, romance, art, and the iconic Eiffel Tower.",
+    description:
+      "The city of lights, romance, art, and the iconic Eiffel Tower.",
   },
   {
     id: 2,
     name: "Tokyo",
     image: tokyoImg,
-    description: "A perfect blend of tradition and innovation in Japan’s capital.",
+    description:
+      "A perfect blend of tradition and innovation in Japan’s capital.",
   },
   {
     id: 3,
     name: "New York",
     image: nycImg,
-    description: "The city that never sleeps, full of energy, art, and skyscrapers.",
+    description:
+      "The city that never sleeps, full of energy, art, and skyscrapers.",
   },
   {
     id: 4,
     name: "Venice",
     image: veniceImg,
-    description: "A floating city of canals, bridges, and breathtaking architecture.",
+    description:
+      "A floating city of canals, bridges, and breathtaking architecture.",
   },
 ];
 

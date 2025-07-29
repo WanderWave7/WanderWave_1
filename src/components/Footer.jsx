@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa";
-import darkMountains from "../assets/dark-mountains.jpg";  // Update the path as per your folder
+import darkMountains from "../assets/dark-mountains.jpg"; // Update the path as per your folder
 
 export default function Footer() {
   return (

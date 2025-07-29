@@ -34,7 +34,10 @@ export default function AboutUs() {
           className="w-full h-full object-cover brightness-60"
         />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-center px-4">
-          <motion.h1 className="text-4xl md:text-6xl font-bold" variants={fadeUp}>
+          <motion.h1
+            className="text-4xl md:text-6xl font-bold"
+            variants={fadeUp}
+          >
             About WanderWave
           </motion.h1>
           <motion.p className="text-lg mt-4 max-w-2xl" variants={fadeUp}>
@@ -55,9 +58,10 @@ export default function AboutUs() {
         >
           <h2 className="text-3xl font-bold mb-4">Our Goal & Mission</h2>
           <p className="max-w-3xl mx-auto text-gray-600">
-            Our mission is to connect travelers with unforgettable experiences by offering
-            affordable travel packages, top-rated destinations, and the best service in the
-            industry. WanderWave aims to be your most trusted travel partner.
+            Our mission is to connect travelers with unforgettable experiences
+            by offering affordable travel packages, top-rated destinations, and
+            the best service in the industry. WanderWave aims to be your most
+            trusted travel partner.
           </p>
         </motion.section>
 
@@ -69,7 +73,9 @@ export default function AboutUs() {
           viewport={{ once: true }}
           variants={staggerContainer}
         >
-          <h2 className="text-3xl font-bold text-center mb-10">Our Core Values</h2>
+          <h2 className="text-3xl font-bold text-center mb-10">
+            Our Core Values
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               {
@@ -90,7 +96,9 @@ export default function AboutUs() {
                 className="bg-white rounded-2xl shadow-md p-6 text-center hover:shadow-xl transition duration-300"
                 variants={fadeUp}
               >
-                <h3 className="text-xl font-semibold mb-2 text-blue-600">{item.title}</h3>
+                <h3 className="text-xl font-semibold mb-2 text-blue-600">
+                  {item.title}
+                </h3>
                 <p className="text-gray-600">{item.desc}</p>
               </motion.div>
             ))}
@@ -117,17 +125,23 @@ export default function AboutUs() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
             {[
               {
-                icon: <FaEnvelope className="text-3xl mx-auto text-blue-500 mb-4" />,
+                icon: (
+                  <FaEnvelope className="text-3xl mx-auto text-blue-500 mb-4" />
+                ),
                 title: "Email Us",
                 text: "support@wanderwave.com",
               },
               {
-                icon: <FaPhoneAlt className="text-3xl mx-auto text-blue-500 mb-4" />,
+                icon: (
+                  <FaPhoneAlt className="text-3xl mx-auto text-blue-500 mb-4" />
+                ),
                 title: "Call Us",
                 text: "+1 1800 25 2202",
               },
               {
-                icon: <FaMapMarkerAlt className="text-3xl mx-auto text-blue-500 mb-4" />,
+                icon: (
+                  <FaMapMarkerAlt className="text-3xl mx-auto text-blue-500 mb-4" />
+                ),
                 title: "Headquarters",
                 text: "Kathmandu, Nepal",
               },

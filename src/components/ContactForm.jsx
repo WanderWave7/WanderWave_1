@@ -6,20 +6,40 @@ export default function ContactForm() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label className="block mb-1 font-semibold">Full Name</label>
-          <input type="text" className="w-full border px-4 py-2 rounded-lg" placeholder="Your name" required />
+          <input
+            type="text"
+            className="w-full border px-4 py-2 rounded-lg"
+            placeholder="Your name"
+            required
+          />
         </div>
         <div>
           <label className="block mb-1 font-semibold">Email Address</label>
-          <input type="email" className="w-full border px-4 py-2 rounded-lg" placeholder="Your email" required />
+          <input
+            type="email"
+            className="w-full border px-4 py-2 rounded-lg"
+            placeholder="Your email"
+            required
+          />
         </div>
       </div>
       <div>
         <label className="block mb-1 font-semibold">Subject</label>
-        <input type="text" className="w-full border px-4 py-2 rounded-lg" placeholder="Subject" required />
+        <input
+          type="text"
+          className="w-full border px-4 py-2 rounded-lg"
+          placeholder="Subject"
+          required
+        />
       </div>
       <div>
         <label className="block mb-1 font-semibold">Message</label>
-        <textarea className="w-full border px-4 py-2 rounded-lg" rows="5" placeholder="Your message" required></textarea>
+        <textarea
+          className="w-full border px-4 py-2 rounded-lg"
+          rows="5"
+          placeholder="Your message"
+          required
+        ></textarea>
       </div>
       <div className="text-center">
         <button

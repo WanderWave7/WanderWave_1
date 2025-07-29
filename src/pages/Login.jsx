@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import { FiUser, FiLock } from "react-icons/fi";
 import { FaFacebookF, FaGoogle } from "react-icons/fa";
-import palmBg from "../assets/palm-bg.jpg";
+import palmBg from "../assets/palm-bg6.jpg";
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -15,7 +15,9 @@ export default function Login() {
     e.preventDefault();
     if (!username.trim() || !password.trim()) return;
 
-    const signupUser = JSON.parse(localStorage.getItem("wanderwave_signup_user"));
+    const signupUser = JSON.parse(
+      localStorage.getItem("wanderwave_signup_user")
+    );
     if (!signupUser || signupUser.username !== username) {
       alert("User not found. Please sign up first.");
       return;

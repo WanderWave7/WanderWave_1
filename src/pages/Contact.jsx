@@ -9,8 +9,8 @@ const fadeInUp = {
   visible: (delay = 0) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, delay }
-  })
+    transition: { duration: 0.6, delay },
+  }),
 };
 
 const Contact = () => {
@@ -121,7 +121,12 @@ const Contact = () => {
           {/* Contact Method */}
           <div className="flex gap-4">
             <label className="flex items-center">
-              <input type="radio" name="contactMethod" className="mr-2" defaultChecked />
+              <input
+                type="radio"
+                name="contactMethod"
+                className="mr-2"
+                defaultChecked
+              />
               Email
             </label>
             <label className="flex items-center">
@@ -135,8 +140,18 @@ const Contact = () => {
             className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 flex items-center gap-2"
           >
             <span>Send Message</span>
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M5 13l4 4L19 7"
+              />
             </svg>
           </button>
         </motion.form>
