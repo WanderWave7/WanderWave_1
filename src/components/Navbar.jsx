@@ -68,7 +68,7 @@ function Navbar() {
         >
           Trips
         </a>
-        <Link to="/about" className={`${hoverColor} transition`}>About</Link>
+        
         <a
           href="#highlights"
           onClick={(e) => {
@@ -79,6 +79,8 @@ function Navbar() {
         >
           Destinations
         </a>
+        <Link to="/about" className={`${hoverColor} transition`}>About Us</Link>
+
         {user && (
           <Link to="/profile" className="hover:text-green-500 transition">
             Profile

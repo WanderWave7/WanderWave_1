@@ -37,7 +37,7 @@ export default function DestinationHighlights() {
 
   return (
     <div className="bg-gray-100 py-16 px-4 sm:px-8 lg:px-20">
-      <h2 className="text-4xl font-bold text-center text-blue-800 mb-12">
+      <h2 className="text-4xl font-bold text-center text-blue-700 mb-12">
         Destination Highlights
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
