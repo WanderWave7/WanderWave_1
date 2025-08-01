@@ -1,18 +1,13 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FiPhone, FiMenu, FiX } from "react-icons/fi";
-import { useAuth } from "../AuthContext";
+import { useUser, SignInButton, SignUpButton, UserButton } from "@clerk/clerk-react";
 
-function Navbar() {
-  const { user, logout } = useAuth();
+const Navbar = () => {
+  const { user, isSignedIn } = useUser();
   const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -36,7 +31,7 @@ function Navbar() {
     const target = document.querySelector(id);
     if (target) {
       target.scrollIntoView({ behavior: "smooth" });
-      setMenuOpen(false); // Close mobile menu after clicking
+      setMenuOpen(false);
     }
   }, []);
 
@@ -48,14 +43,12 @@ function Navbar() {
           : "bg-white/30 backdrop-blur-md text-white"
       }`}
     >
-      {/* Logo */}
       <div className={`text-2xl font-bold tracking-wide ${textColor}`}>
         <Link to="/" className={`${hoverColor} transition`}>
           WanderWave<span className="text-red-400">.</span>
         </Link>
       </div>
 
-      {/* Hamburger (Mobile Only) */}
       <div
         className="md:hidden text-2xl"
         onClick={() => setMenuOpen(!menuOpen)}
@@ -67,9 +60,8 @@ function Navbar() {
         )}
       </div>
 
-      {/* Navigation Links */}
       <div
-        className={`${
+        className={`$${
           menuOpen ? "flex" : "hidden"
         } md:flex flex-col md:flex-row absolute md:static top-16 left-4 right-4 md:left-auto md:right-auto bg-white md:bg-transparent text-black md:text-inherit rounded-lg md:rounded-none p-4 md:p-0 shadow-md md:shadow-none z-40 gap-4 md:gap-6 font-medium transition-all`}
       >
@@ -108,7 +100,7 @@ function Navbar() {
           About Us
         </Link>
 
-        {user && (
+        {isSignedIn && (
           <Link
             to="/profile"
             className="hover:text-green-500 transition"
@@ -118,80 +110,59 @@ function Navbar() {
           </Link>
         )}
 
-        {/* Auth Buttons for mobile */}
         <div className="flex flex-col md:hidden gap-2">
-          {!user ? (
+          {!isSignedIn ? (
             <>
-              <Link
-                to="/login"
-                className="text-sm text-blue-700 font-semibold"
-                onClick={() => setMenuOpen(false)}
-              >
-                Login
-              </Link>
-              <Link
-                to="/signup"
-                className="text-sm bg-blue-600 text-white px-4 py-2 rounded-md text-center hover:bg-blue-800 font-semibold"
-                onClick={() => setMenuOpen(false)}
-              >
-                Sign Up
-              </Link>
+              <SignInButton>
+                <span className="text-sm text-blue-700 font-semibold">
+                  Login
+                </span>
+              </SignInButton>
+              <SignUpButton>
+                <span className="text-sm bg-blue-600 text-white px-4 py-2 rounded-md text-center hover:bg-blue-800 font-semibold">
+                  Sign Up
+                </span>
+              </SignUpButton>
             </>
           ) : (
             <>
               <span className={`text-sm font-semibold`}>
-                Hi, {user.username || "User"}
+                Hi, {user?.username || user?.firstName || "User"}
               </span>
-              <button
-                onClick={() => {
-                  handleLogout();
-                  setMenuOpen(false);
-                }}
-                className="text-sm text-red-500 font-semibold"
-              >
-                Logout
-              </button>
+              <UserButton afterSignOutUrl="/" />
             </>
           )}
         </div>
       </div>
 
-      {/* Desktop Only Auth & Contact */}
       <div className="hidden md:flex items-center gap-6">
         <div className="flex gap-3 items-center">
-          {!user ? (
+          {!isSignedIn ? (
             <>
-              <Link
-                to="/login"
-                className={`${textColor} px-4 py-1.5 rounded-md ${hoverColor} text-sm font-semibold`}
-              >
-                Login
-              </Link>
-              <Link
-                to="/signup"
-                className="bg-blue-600 text-white px-4 py-1.5 rounded-md hover:bg-blue-800 text-sm font-semibold"
-              >
-                Sign Up
-              </Link>
+              <SignInButton>
+                <span
+                  className={`${textColor} px-4 py-1.5 rounded-md ${hoverColor} text-sm font-semibold cursor-pointer`}
+                >
+                  Login
+                </span>
+              </SignInButton>
+              <SignUpButton>
+                <span className="bg-blue-600 text-white px-4 py-1.5 rounded-md hover:bg-blue-800 text-sm font-semibold cursor-pointer">
+                  Sign Up
+                </span>
+              </SignUpButton>
             </>
           ) : (
             <>
               <span className={`${textColor} text-sm font-semibold`}>
-                Hi, {user.username || "User"}
+                Hi, {user?.username || user?.firstName || "User"}
               </span>
-              <button
-                onClick={handleLogout}
-                className={`${textColor} hover:text-yellow-500 text-sm font-semibold`}
-              >
-                Logout
-              </button>
+              <UserButton afterSignOutUrl="/" />
             </>
           )}
         </div>
 
-        <div
-          className={`hidden md:flex items-center gap-2 text-sm ${textColor}`}
-        >
+        <div className={`hidden md:flex items-center gap-2 text-sm ${textColor}`}>
           <FiPhone className="text-red-400 text-lg" />
           <div>
             <p className="font-bold leading-none">+1 1800 25 2202</p>
@@ -207,6 +178,6 @@ function Navbar() {
       </div>
     </nav>
   );
-}
+};
 
 export default React.memo(Navbar);

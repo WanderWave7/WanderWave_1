@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useAuth } from "../AuthContext";
 import {
   FaUserCircle,
   FaPhone,
@@ -9,11 +8,12 @@ import {
   FaSave,
 } from "react-icons/fa";
 import { MdTravelExplore } from "react-icons/md";
+import { useUser } from "@clerk/clerk-react";
 
 export default function Profile() {
-  const { user } = useAuth();
-  const LOCAL_KEY = `wanderwave_profile_${user?.username || "guest"}`;
+  const { user } = useUser();
 
+  const LOCAL_KEY = `wanderwave_profile_${user?.username || "guest"}`;
   const [image, setImage] = useState(null);
   const [phone, setPhone] = useState("");
   const [bio, setBio] = useState("");
@@ -32,32 +32,15 @@ export default function Profile() {
   }, [user]);
 
   useEffect(() => {
-    const data = {
-      phone,
-      bio,
-      wishlist: wishlistItems,
-      image,
-    };
+    const data = { phone, bio, wishlist: wishlistItems, image };
     localStorage.setItem(LOCAL_KEY, JSON.stringify(data));
   }, [phone, bio, wishlistItems, image]);
-
-  if (!user) {
-    return (
-      <div className="flex justify-center items-center min-h-screen bg-gray-100">
-        <div className="text-center text-xl text-gray-600">
-          Please log in to view your profile.
-        </div>
-      </div>
-    );
-  }
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setImage(reader.result);
-      };
+      reader.onloadend = () => setImage(reader.result);
       reader.readAsDataURL(file);
     }
   };
@@ -70,6 +53,16 @@ export default function Profile() {
   };
 
   const toggleEditMode = () => setEditMode(!editMode);
+
+  if (!user) {
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-gray-100">
+        <div className="text-center text-xl text-gray-600">
+          Please log in to view your profile.
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative min-h-screen w-full pt-24 pb-10 px-6 sm:px-12">
@@ -87,7 +80,7 @@ export default function Profile() {
         <div className="md:w-1/3 bg-gradient-to-b from-blue-100 to-blue-200 p-6 flex flex-col items-center">
           <div className="relative w-32 h-32 rounded-full overflow-hidden border-4 border-blue-400 mb-4">
             <img
-              src={image || "https://via.placeholder.com/120x120.png?text=User"}
+              src={image || user.imageUrl || "https://via.placeholder.com/120x120.png?text=User"}
               alt="Profile"
               className="object-cover w-full h-full"
             />
@@ -102,11 +95,11 @@ export default function Profile() {
           )}
 
           <h2 className="text-xl font-bold text-blue-800 flex items-center gap-2">
-            <FaUserCircle /> {user.username}
+            <FaUserCircle /> {user.username || user.firstName}
           </h2>
 
           <p className="text-sm text-gray-700 mt-2 flex items-center gap-2">
-            <FaEnvelope /> {user.email || "Not Provided"}
+            <FaEnvelope /> {user.emailAddresses?.[0]?.emailAddress || "Not Provided"}
           </p>
 
           <div className="mt-6 w-full space-y-4">
