@@ -1,7 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FiPhone, FiMenu, FiX } from "react-icons/fi";
-import { useUser, SignInButton, SignUpButton, UserButton } from "@clerk/clerk-react";
+import {
+  useUser,
+  SignInButton,
+  SignUpButton,
+  UserButton,
+} from "@clerk/clerk-react";
 
 const Navbar = () => {
   const { user, isSignedIn } = useUser();
@@ -12,20 +17,12 @@ const Navbar = () => {
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;
-      setIsScrolled((prev) => {
-        if ((scrollTop > 80 && !prev) || (scrollTop <= 80 && prev)) {
-          return scrollTop > 80;
-        }
-        return prev;
-      });
+      setIsScrolled(scrollTop > 80);
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  const textColor = isScrolled ? "text-black" : "text-white";
-  const hoverColor = isScrolled ? "hover:text-red-500" : "hover:text-red-400";
 
   const scrollToSection = useCallback((id) => {
     const target = document.querySelector(id);
@@ -35,6 +32,9 @@ const Navbar = () => {
     }
   }, []);
 
+  const textColor = isScrolled ? "text-black" : "text-white";
+  const hoverColor = isScrolled ? "hover:text-red-500" : "hover:text-red-400";
+
   return (
     <nav
       className={`w-[calc(100%-2rem)] mx-auto py-4 px-6 md:px-16 rounded-xl mt-4 flex justify-between items-center shadow-md fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -43,33 +43,28 @@ const Navbar = () => {
           : "bg-white/30 backdrop-blur-md text-white"
       }`}
     >
-      <div className={`text-2xl font-bold tracking-wide ${textColor}`}>
+      {/* Logo */}
+      <div className="text-2xl font-bold tracking-wide">
         <Link to="/" className={`${hoverColor} transition`}>
           WanderWave<span className="text-red-400">.</span>
         </Link>
       </div>
 
+      {/* Mobile menu icon */}
       <div
-        className="md:hidden text-2xl"
-        onClick={() => setMenuOpen(!menuOpen)}
+        className="md:hidden text-2xl cursor-pointer z-50"
+        onClick={() => setMenuOpen((prev) => !prev)}
       >
-        {menuOpen ? (
-          <FiX className={`${textColor}`} />
-        ) : (
-          <FiMenu className={`${textColor}`} />
-        )}
+        {menuOpen ? <FiX className={textColor} /> : <FiMenu className={textColor} />}
       </div>
 
+      {/* Navigation Links */}
       <div
-        className={`$${
+        className={`${
           menuOpen ? "flex" : "hidden"
-        } md:flex flex-col md:flex-row absolute md:static top-16 left-4 right-4 md:left-auto md:right-auto bg-white md:bg-transparent text-black md:text-inherit rounded-lg md:rounded-none p-4 md:p-0 shadow-md md:shadow-none z-40 gap-4 md:gap-6 font-medium transition-all`}
+        } md:flex flex-col md:flex-row items-center absolute md:static top-[72px] left-0 w-full md:w-auto bg-white md:bg-transparent text-black md:text-inherit px-6 md:px-0 py-6 md:py-0 shadow-md md:shadow-none gap-6 transition-all z-40`}
       >
-        <Link
-          to="/"
-          className={`${hoverColor} transition`}
-          onClick={() => setMenuOpen(false)}
-        >
+        <Link to="/" onClick={() => setMenuOpen(false)} className={`${hoverColor} transition`}>
           Home
         </Link>
         <a
@@ -92,14 +87,9 @@ const Navbar = () => {
         >
           Destinations
         </a>
-        <Link
-          to="/about"
-          className={`${hoverColor} transition`}
-          onClick={() => setMenuOpen(false)}
-        >
+        <Link to="/about" onClick={() => setMenuOpen(false)} className={`${hoverColor} transition`}>
           About Us
         </Link>
-
         {isSignedIn && (
           <Link
             to="/profile"
@@ -110,67 +100,63 @@ const Navbar = () => {
           </Link>
         )}
 
-        <div className="flex flex-col md:hidden gap-2">
+        {/* Account section (mobile view) */}
+        <div className="flex flex-col gap-2 md:hidden w-full">
           {!isSignedIn ? (
             <>
               <SignInButton>
-                <span className="text-sm text-blue-700 font-semibold">
+                <span className="text-blue-700 font-semibold text-center cursor-pointer">
                   Login
                 </span>
               </SignInButton>
               <SignUpButton>
-                <span className="text-sm bg-blue-600 text-white px-4 py-2 rounded-md text-center hover:bg-blue-800 font-semibold">
+                <span className="bg-blue-600 text-white px-4 py-2 rounded-md text-center hover:bg-blue-800 font-semibold cursor-pointer">
                   Sign Up
                 </span>
               </SignUpButton>
             </>
           ) : (
-            <>
-              <span className={`text-sm font-semibold`}>
+            <div className="flex flex-col items-center gap-2">
+              <span className="text-sm font-semibold">
                 Hi, {user?.username || user?.firstName || "User"}
               </span>
               <UserButton afterSignOutUrl="/" />
-            </>
+            </div>
           )}
         </div>
       </div>
 
+      {/* Desktop right-side account & contact */}
       <div className="hidden md:flex items-center gap-6">
-        <div className="flex gap-3 items-center">
-          {!isSignedIn ? (
-            <>
-              <SignInButton>
-                <span
-                  className={`${textColor} px-4 py-1.5 rounded-md ${hoverColor} text-sm font-semibold cursor-pointer`}
-                >
-                  Login
-                </span>
-              </SignInButton>
-              <SignUpButton>
-                <span className="bg-blue-600 text-white px-4 py-1.5 rounded-md hover:bg-blue-800 text-sm font-semibold cursor-pointer">
-                  Sign Up
-                </span>
-              </SignUpButton>
-            </>
-          ) : (
-            <>
-              <span className={`${textColor} text-sm font-semibold`}>
-                Hi, {user?.username || user?.firstName || "User"}
+        {!isSignedIn ? (
+          <>
+            <SignInButton>
+              <span
+                className={`${textColor} px-4 py-1.5 rounded-md ${hoverColor} text-sm font-semibold cursor-pointer`}
+              >
+                Login
               </span>
-              <UserButton afterSignOutUrl="/" />
-            </>
-          )}
-        </div>
+            </SignInButton>
+            <SignUpButton>
+              <span className="bg-blue-600 text-white px-4 py-1.5 rounded-md hover:bg-blue-800 text-sm font-semibold cursor-pointer">
+                Sign Up
+              </span>
+            </SignUpButton>
+          </>
+        ) : (
+          <>
+            <span className={`${textColor} text-sm font-semibold`}>
+              Hi, {user?.username || user?.firstName || "User"}
+            </span>
+            <UserButton afterSignOutUrl="/" />
+          </>
+        )}
 
         <div className={`hidden md:flex items-center gap-2 text-sm ${textColor}`}>
           <FiPhone className="text-red-400 text-lg" />
           <div>
             <p className="font-bold leading-none">+1 1800 25 2202</p>
-            <p
-              className={`text-xs ${
-                isScrolled ? "text-black/80" : "text-white/90"
-              } leading-none`}
-            >
+            <p className={`text-xs ${isScrolled ? "text-black/80" : "text-white/90"} leading-none`}>
               Call Your Travel Agent
             </p>
           </div>
