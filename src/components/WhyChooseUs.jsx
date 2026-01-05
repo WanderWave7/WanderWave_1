@@ -1,4 +1,6 @@
 import React from "react";
+import { motion } from "framer-motion";
+import SectionWrapper, { fadeIn } from "./SectionWrapper";
 import {
   FaGlobeAsia,
   FaMoneyCheckAlt,
@@ -35,25 +37,29 @@ const reasons = [
 
 export default function WhyChooseUs() {
   return (
-    <section className="bg-gray-100 py-20 px-6" id="why-choose-us">
+    <SectionWrapper className="bg-gray-100 py-20 px-6" id="why-choose-us">
       <div className="max-w-7xl mx-auto text-center">
-        <h2 className="text-4xl font-bold mb-14">
+        <motion.h2
+          variants={fadeIn("down", "spring", 0.1, 0.75)}
+          className="text-4xl font-bold mb-14"
+        >
           Why Choose <span className="text-blue-600">WanderWave</span>?
-        </h2>
+        </motion.h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
           {reasons.map((reason, index) => (
-            <div
+            <motion.div
               key={index}
+              variants={fadeIn("up", "spring", index * 0.2, 0.75)}
               className="bg-white shadow-lg rounded-2xl p-8 hover:shadow-2xl transition-all duration-300 flex flex-col items-center text-center"
             >
               <div className="mb-6">{reason.icon}</div>
               <h3 className="text-xl font-semibold mb-3">{reason.title}</h3>
               <p className="text-gray-600 text-base">{reason.description}</p>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
-    </section>
+    </SectionWrapper>
   );
 }

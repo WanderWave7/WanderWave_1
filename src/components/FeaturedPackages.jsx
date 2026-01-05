@@ -1,5 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import SectionWrapper, { fadeIn } from "./SectionWrapper";
 import pokharaImg from "../assets/pokhara.jpg";
 import kathmanduImg from "../assets/kathmandu.jpg";
 import lumbiniImg from "../assets/lumbini.jpg";
@@ -38,14 +40,21 @@ export default function FeaturedPackages() {
   const navigate = useNavigate();
 
   return (
-    <div className="bg-gray-100 py-16 px-4 sm:px-8 lg:px-20">
-      <h2 className="text-4xl font-bold text-center text-blue-600 mb-12">
+    <SectionWrapper
+      className="bg-gray-100 py-16 px-4 sm:px-8 lg:px-20"
+      id="featured"
+    >
+      <motion.h2
+        className="text-4xl font-bold text-center text-blue-600 mb-12"
+        variants={fadeIn("down", "spring", 0.1, 0.75)}
+      >
         Featured Travel Packages
-      </h2>
+      </motion.h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
-        {packages.map((pkg) => (
-          <div
+        {packages.map((pkg, index) => (
+          <motion.div
             key={pkg.id}
+            variants={fadeIn("up", "spring", index * 0.2, 0.75)}
             className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition duration-300 transform hover:scale-[1.02] group"
           >
             <div className="overflow-hidden">
@@ -71,9 +80,9 @@ export default function FeaturedPackages() {
                 Learn More
               </button>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
-    </div>
+    </SectionWrapper>
   );
 }

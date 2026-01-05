@@ -4,14 +4,7 @@ import officeImage from "../assets/officeImage.jpg";
 import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaClock } from "react-icons/fa";
 import { motion } from "framer-motion";
 
-const fadeInUp = {
-  hidden: { opacity: 0, y: 40 },
-  visible: (delay = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, delay },
-  }),
-};
+import SectionWrapper, { fadeIn } from "../components/SectionWrapper";
 
 const Contact = () => {
   // Scroll to top on mount (safety in case global ScrollToTop fails)
@@ -22,29 +15,27 @@ const Contact = () => {
   return (
     <div>
       {/* Hero Image */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1 }}
-        className="w-full h-[400px] md:h-[500px]"
-      >
-        <img
+      <div className="w-full h-[400px] md:h-[500px] overflow-hidden">
+        <motion.img
           src={contactHero}
           alt="Contact Hero"
           className="w-full h-full object-cover brightness-75"
+          initial={{ scale: 1.1 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 10, ease: "easeOut" }}
         />
-      </motion.div>
+      </div>
 
       {/* Main Section */}
-      <motion.div
+      <SectionWrapper
         className="max-w-7xl mx-auto px-4 py-12 grid md:grid-cols-2 gap-8"
-        variants={fadeInUp}
-        initial="hidden"
-        animate="visible"
-        custom={0.2}
+        delay={0.2}
       >
         {/* Left Side: Office Info */}
-        <motion.div variants={fadeInUp} custom={0.3} className="space-y-6">
+        <motion.div
+          variants={fadeIn("right", "spring", 0.3, 0.75)}
+          className="space-y-6"
+        >
           <img
             src={officeImage}
             alt="Office"
@@ -72,8 +63,7 @@ const Contact = () => {
 
         {/* Right Side: Contact Form */}
         <motion.form
-          variants={fadeInUp}
-          custom={0.4}
+          variants={fadeIn("left", "spring", 0.5, 0.75)}
           className="bg-white shadow-md rounded-xl p-8 space-y-6"
         >
           <h2 className="text-2xl font-semibold">Send Us a Message</h2>
@@ -155,7 +145,7 @@ const Contact = () => {
             </svg>
           </button>
         </motion.form>
-      </motion.div>
+      </SectionWrapper>
     </div>
   );
 };

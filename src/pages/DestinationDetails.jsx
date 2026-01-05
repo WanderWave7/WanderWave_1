@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import destinationData from "../data/destinationData";
 import { motion, AnimatePresence } from "framer-motion";
+import SectionWrapper, { fadeIn, zoomIn } from "../components/SectionWrapper";
 
 import { FaTemperatureHigh } from "react-icons/fa";
 import { WiHumidity, WiStrongWind } from "react-icons/wi";
@@ -21,43 +22,6 @@ export default function DestinationDetails() {
 
   if (!destination)
     return <div className="p-10 text-center">Destination not found</div>;
-
-  // Animation Variants
-  const containerVariants = {
-    hidden: {},
-    visible: {
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.2,
-      },
-    },
-  };
-
-  const fadeInUp = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        type: "spring",
-        stiffness: 70,
-        damping: 12,
-      },
-    },
-  };
-
-  const imagePop = {
-    hidden: { opacity: 0, scale: 0.95 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 14,
-      },
-    },
-  };
 
   return (
     <div className="bg-white">
@@ -86,17 +50,17 @@ export default function DestinationDetails() {
         >
           <motion.h1
             className="text-5xl md:text-6xl font-bold"
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.6, duration: 0.8 }}
+            variants={fadeIn("up", "spring", 0.6, 0.8)}
+            initial="hidden"
+            animate="show"
           >
             {destination.name}
           </motion.h1>
           <motion.p
             className="text-xl italic mt-4"
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.8, duration: 0.8 }}
+            variants={fadeIn("up", "spring", 0.8, 0.8)}
+            initial="hidden"
+            animate="show"
           >
             {destination.quote}
           </motion.p>
@@ -104,19 +68,15 @@ export default function DestinationDetails() {
       </div>
 
       {/* Main Section */}
-      <motion.div
+      <SectionWrapper
         className="grid grid-cols-1 lg:grid-cols-3 gap-8 px-10 py-14"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
+        stagger={0.15}
+        delay={0.2}
       >
         {/* Left Section */}
         <div className="lg:col-span-2 space-y-6">
           {/* Thumbnail Gallery */}
-          <motion.div
-            className="flex gap-4 overflow-x-auto"
-            variants={containerVariants}
-          >
+          <motion.div className="flex gap-4 overflow-x-auto">
             {destination.gallery.map((img, idx) => (
               <motion.img
                 key={idx}
@@ -126,7 +86,7 @@ export default function DestinationDetails() {
                 className={`w-24 h-20 object-cover cursor-pointer rounded-md border-2 ${
                   mainImage === img ? "border-blue-500" : "border-transparent"
                 }`}
-                variants={imagePop}
+                variants={zoomIn(idx * 0.1, 0.5)}
                 whileHover={{ scale: 1.08 }}
               />
             ))}
@@ -137,16 +97,19 @@ export default function DestinationDetails() {
             src={mainImage}
             alt="Featured"
             className="w-full h-[400px] object-cover rounded-xl shadow-md"
-            variants={fadeInUp}
+            variants={fadeIn("up", "spring", 0.2, 0.75)}
           />
 
           {/* Description */}
-          <motion.p className="text-gray-700 text-lg" variants={fadeInUp}>
+          <motion.p
+            className="text-gray-700 text-lg"
+            variants={fadeIn("up", "spring", 0.3, 0.75)}
+          >
             {destination.description}
           </motion.p>
 
           {/* Things To Do */}
-          <motion.div variants={fadeInUp}>
+          <motion.div variants={fadeIn("up", "spring", 0.4, 0.75)}>
             <h2 className="text-2xl font-bold text-blue-800 mb-4">
               Things to Do
             </h2>
@@ -155,7 +118,7 @@ export default function DestinationDetails() {
                 <motion.div
                   key={idx}
                   className="bg-blue-50 p-4 rounded-lg shadow-sm"
-                  variants={fadeInUp}
+                  variants={fadeIn("up", "spring", idx * 0.1, 0.5)}
                 >
                   <h4 className="font-semibold text-blue-700">✔️ {act}</h4>
                 </motion.div>
@@ -167,7 +130,7 @@ export default function DestinationDetails() {
         {/* Weather & Climate Info Box */}
         <motion.div
           className="bg-white shadow-xl rounded-xl p-6 border text-gray-800"
-          variants={fadeInUp}
+          variants={fadeIn("left", "spring", 0.5, 0.75)}
         >
           <div className="flex items-center gap-3 mb-4">
             <FaTemperatureHigh className="text-xl text-yellow-500" />
@@ -217,7 +180,7 @@ export default function DestinationDetails() {
             </p>
           </div>
         </motion.div>
-      </motion.div>
+      </SectionWrapper>
 
       {/* Modal Viewer */}
       <AnimatePresence>

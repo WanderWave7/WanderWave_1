@@ -1,4 +1,6 @@
 import React from "react";
+import { motion } from "framer-motion";
+import SectionWrapper, { fadeIn } from "./SectionWrapper";
 import { useNavigate } from "react-router-dom";
 import parisImg from "../assets/parisHero.jpg";
 import tokyoImg from "../assets/tokyo1.jpg";
@@ -40,14 +42,21 @@ export default function DestinationHighlights() {
   const navigate = useNavigate();
 
   return (
-    <div className="bg-gray-100 py-16 px-4 sm:px-8 lg:px-20">
-      <h2 className="text-4xl font-bold text-center text-blue-700 mb-12">
+    <SectionWrapper
+      id="highlights"
+      className="bg-gray-100 py-16 px-4 sm:px-8 lg:px-20"
+    >
+      <motion.h2
+        variants={fadeIn("down", "spring", 0.1, 0.75)}
+        className="text-4xl font-bold text-center text-blue-700 mb-12"
+      >
         Destination Highlights
-      </h2>
+      </motion.h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
-        {destinations.map((dest) => (
-          <div
+        {destinations.map((dest, index) => (
+          <motion.div
             key={dest.id}
+            variants={fadeIn("up", "spring", index * 0.2, 0.75)}
             className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition duration-300 transform hover:scale-[1.02] group"
           >
             <div className="overflow-hidden">
@@ -69,9 +78,9 @@ export default function DestinationHighlights() {
                 View Details
               </button>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
-    </div>
+    </SectionWrapper>
   );
 }

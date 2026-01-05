@@ -1,6 +1,7 @@
 import React from "react";
 import Slider from "react-slick";
 import { motion } from "framer-motion";
+import SectionWrapper, { fadeIn } from "./SectionWrapper";
 
 const testimonials = [
   {
@@ -36,44 +37,43 @@ const settings = {
 
 export default function TestimonialSection() {
   return (
-    <section className="bg-white py-20 px-4" id="testimonials">
+    <SectionWrapper className="bg-white py-20 px-4" id="testimonials">
       <div className="max-w-4xl mx-auto text-center">
         <motion.h2
           className="text-4xl font-bold mb-10"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          variants={fadeIn("down", "spring", 0.1, 0.75)}
         >
           What People Say About{" "}
           <span className="text-blue-600">WanderWave</span>
         </motion.h2>
 
-        <Slider {...settings}>
-          {testimonials.map((testimonial, index) => (
-            <motion.div
-              key={index}
-              className="p-8 bg-gray-50 rounded-xl shadow-md"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.2 }}
-            >
-              <div className="flex flex-col items-center">
-                <img
-                  src={testimonial.image}
-                  alt={testimonial.name}
-                  className="w-28 h-28 rounded-full object-cover border-4 border-blue-500 mb-6"
-                />
-                <p className="text-gray-700 text-lg italic mb-4">
-                  "{testimonial.feedback}"
-                </p>
-                <h4 className="text-xl font-semibold text-blue-700">
-                  {testimonial.name}
-                </h4>
+        <motion.div variants={fadeIn("up", "spring", 0.3, 1)}>
+          <Slider {...settings}>
+            {testimonials.map((testimonial, index) => (
+              <div
+                key={index}
+                className="outline-none" // Fix focus outline issues in slick
+              >
+                <div className="p-8 bg-gray-50 rounded-xl shadow-md mx-2 my-2">
+                  <div className="flex flex-col items-center">
+                    <img
+                      src={testimonial.image}
+                      alt={testimonial.name}
+                      className="w-28 h-28 rounded-full object-cover border-4 border-blue-500 mb-6"
+                    />
+                    <p className="text-gray-700 text-lg italic mb-4">
+                      "{testimonial.feedback}"
+                    </p>
+                    <h4 className="text-xl font-semibold text-blue-700">
+                      {testimonial.name}
+                    </h4>
+                  </div>
+                </div>
               </div>
-            </motion.div>
-          ))}
-        </Slider>
+            ))}
+          </Slider>
+        </motion.div>
       </div>
-    </section>
+    </SectionWrapper>
   );
 }
